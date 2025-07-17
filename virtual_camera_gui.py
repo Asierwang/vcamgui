@@ -81,7 +81,7 @@ class VirtualCameraApp:
         ttk.Label(res_frame, text="分辨率:").pack(side=tk.LEFT, padx=5)
         
         self.res_var = tk.StringVar(value="640x480")
-        resolutions = ["640x480", "480x640", "800x600", "1024x768", "1280x720", "1920x1080"]
+        resolutions = ["640x480", "480x640", "600x600", "1024x768", "1280x720", "1920x1080"]
         self.res_combo = ttk.Combobox(
             res_frame, 
             textvariable=self.res_var, 
