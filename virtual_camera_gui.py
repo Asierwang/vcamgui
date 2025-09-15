@@ -200,8 +200,22 @@ class VirtualCameraApp:
             # 获取帧率
             fps = int(float(self.fps_var.get()))
             
-            # 加载原始图片
-            img = cv2.imread(self.image_path)
+            # 加载原始图片 - 支持中文路径
+            try:
+                # 使用numpy和cv2.imdecode替代cv2.imread以支持中文路径
+                img_data = np.fromfile(self.image_path, dtype=np.uint8)
+                img = cv2.imdecode(img_data, cv2.IMREAD_COLOR)
+                
+                if img is None:
+                    # 尝试使用PIL作为备选方案
+                    from PIL import Image
+                    img_pil = Image.open(self.image_path)
+                    img = np.array(img_pil)
+                    # 转换RGB到BGR格式（OpenCV使用BGR）
+                    img = cv2.cvtColor(img, cv2.COLOR_RGB2BGR)
+            except Exception as e:
+                raise ValueError(f"无法加载图片: {self.image_path}. 错误: {str(e)}")
+            
             if img is None:
                 raise ValueError(f"无法加载图片: {self.image_path}")
             
